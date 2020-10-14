@@ -99,6 +99,7 @@ public class PlayerController : MonoBehaviour
             if (pickup != null)
             {
                 playerScore += pickup.Collect();
+                ServiceLocator.Get<UIManager>().UpdateScoreDisplay(playerScore);
             }
         }
     }
