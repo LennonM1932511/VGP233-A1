@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
@@ -12,7 +13,9 @@ public class PlayerController : MonoBehaviour
     public float speed = 20.0f;
     public float jumpForce = 200.0f;
     public int playerScore = 0;
+    public int playerLives = 3;
 
+    private Vector3 startPosition;
     private Rigidbody rb;
     public GameObject uiManager;
     private JumpState _jumpState = JumpState.Grounded;
@@ -27,6 +30,8 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody>();
+        startPosition = new Vector3();
+        startPosition = rb.position;
     }
 
     // Update is called once per frame
@@ -54,8 +59,8 @@ public class PlayerController : MonoBehaviour
     }
 
     private void Jump()
-    {
-        float jumpVal = Input.GetKeyDown(KeyCode.Space) ? jumpForce : 0.0f;
+    {   
+        float jumpVal = Input.GetButtonDown("Jump") ? jumpForce : 0.0f;
 
         switch (_jumpState)
         {
@@ -88,6 +93,16 @@ public class PlayerController : MonoBehaviour
             && collision.gameObject.CompareTag("Ground"))
         {
             _jumpState = JumpState.Grounded;
+        }
+        
+        // Deduct a life and reset player position/velocity
+        if (collision.gameObject.CompareTag("Wall"))
+        {
+            playerLives -= 1;
+            ServiceLocator.Get<UIManager>().UpdateLivesDisplay(playerLives);
+            
+            rb.position = startPosition;
+            rb.velocity = new Vector3(0, 0, 0);
         }
     }
 
