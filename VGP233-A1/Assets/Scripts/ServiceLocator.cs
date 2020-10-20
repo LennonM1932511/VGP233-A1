@@ -27,7 +27,7 @@ static public class ServiceLocator
 
         m_systems.TryGetValue(typeof(T), out ret);
 
-        if (ret==null)
+        if (ret == null)
         {
             Debug.Log("Could not find [" + typeof(T) + "] as a rgistered system.");
         }

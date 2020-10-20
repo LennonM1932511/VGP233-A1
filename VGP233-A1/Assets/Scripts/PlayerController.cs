@@ -42,7 +42,7 @@ public class PlayerController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        Move();        
+        Move();
     }
 
     private void Move()
@@ -52,14 +52,14 @@ public class PlayerController : MonoBehaviour
 
         float moveHorizontal = Input.GetAxis("Horizontal");
         float moveVertical = Input.GetAxis("Vertical");
-        
-        Vector3 movement = new Vector3(moveHorizontal, 0.0f, moveVertical);        
+
+        Vector3 movement = new Vector3(moveHorizontal, 0.0f, moveVertical);
 
         rb.AddForce(movement * speed);
     }
 
     private void Jump()
-    {   
+    {
         float jumpVal = Input.GetButtonDown("Jump") ? jumpForce : 0.0f;
 
         switch (_jumpState)
@@ -72,7 +72,7 @@ public class PlayerController : MonoBehaviour
                 break;
             case JumpState.Jumping:
                 if (jumpVal > 0.0f)
-                {                    
+                {
                     _jumpState = JumpState.DoubleJumping;
                 }
                 break;
@@ -83,24 +83,24 @@ public class PlayerController : MonoBehaviour
                 break;
         }
 
-        Vector3 jumping = new Vector3(0.0f, jumpVal ,0.0f);
+        Vector3 jumping = new Vector3(0.0f, jumpVal, 0.0f);
         rb.AddForce(jumping);
     }
 
     private void OnCollisionEnter(Collision collision)
     {
-        if ((_jumpState == JumpState.Jumping || _jumpState == JumpState.DoubleJumping) 
+        if ((_jumpState == JumpState.Jumping || _jumpState == JumpState.DoubleJumping)
             && collision.gameObject.CompareTag("Ground"))
         {
             _jumpState = JumpState.Grounded;
         }
-        
+
         // Deduct a life and reset player position/velocity
         if (collision.gameObject.CompareTag("Wall"))
         {
             playerLives -= 1;
             ServiceLocator.Get<UIManager>().UpdateLivesDisplay(playerLives);
-            
+
             rb.position = startPosition;
             rb.velocity = new Vector3(0, 0, 0);
         }

@@ -25,7 +25,7 @@ public class UIManager : MonoBehaviour
         if (currentScore >= 2000)
         {
             Time.timeScale = 0;
-            winTextObject.SetActive(true);            
+            winTextObject.SetActive(true);
         }
     }
 
@@ -34,9 +34,9 @@ public class UIManager : MonoBehaviour
         livesText.text = "Lives: " + currentLives.ToString();
 
         if (currentLives == 0)
-        {            
+        {
             Time.timeScale = 0;
-            loseTextObject.SetActive(true);            
+            loseTextObject.SetActive(true);
         }
     }
 }
